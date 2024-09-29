@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { createUser } from "../repositories/user.repository";
 import bcrypt from "bcryptjs";
-import { UserAlreadyExists } from "../errors/databaseErrors";
+import { EmailAlreadyExists } from "../errors/databaseErrors";
 
 export const signInUser = async (req: Request, res: Response) => {};
 
@@ -25,12 +25,12 @@ export const signUpUser = async (req: Request, res: Response) => {
   });
 
   if (result.isOk) {
-    return res.status(201).json({ message: "User created successfully" });
+    return res.status(201).json({ message: "User created successfully", user: result.value });
   }
 
   const error = result.error;
 
-  if (error instanceof UserAlreadyExists) {
+  if (error instanceof EmailAlreadyExists) {
     return res.status(409).json({ error: error.message });
   }
 
