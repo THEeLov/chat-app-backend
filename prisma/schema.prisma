@@ -17,6 +17,7 @@ model User {
   conversations    Conversation[] @relation(fields: [conversationIDs], references: [id])
   sentMessages     Message[]      @relation("SenderMessage")
   receivedMessages Message[]      @relation("ReceiverMessage")
+  createdAt        DateTime       @default(now())
 }
 
 model Conversation {
@@ -35,4 +36,5 @@ model Message {
   message        String
   conversation   Conversation @relation(fields: [conversationId], references: [id])
   conversationId String       @db.ObjectId
+  createdAt      DateTime     @default(now())
 }
