@@ -8,9 +8,31 @@ generator client {
 }
 
 model User {
-  id         String @id @default(auto()) @map("_id") @db.ObjectId
-  email      String @unique
-  password   String
-  username   String
-  profilePic String
+  id               String         @id @default(auto()) @map("_id") @db.ObjectId
+  email            String         @unique
+  password         String
+  username         String
+  profilePic       String
+  conversationIDs  String[]       @db.ObjectId
+  conversations    Conversation[] @relation(fields: [conversationIDs], references: [id])
+  sentMessages     Message[]      @relation("SenderMessage")
+  receivedMessages Message[]      @relation("ReceiverMessage")
+}
+
+model Conversation {
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
+  participantsIDs String[]  @db.ObjectId
+  participants    User[]    @relation(fields: [participantsIDs], references: [id])
+  messages        Message[]
+}
+
+model Message {
+  id             String       @id @default(auto()) @map("_id") @db.ObjectId
+  senderId       String       @db.ObjectId
+  receiverId     String       @db.ObjectId
+  sender         User         @relation("SenderMessage", fields: [senderId], references: [id])
+  receiver       User         @relation("ReceiverMessage", fields: [receiverId], references: [id])
+  message        String
+  conversation   Conversation @relation(fields: [conversationId], references: [id])
+  conversationId String       @db.ObjectId
 }
