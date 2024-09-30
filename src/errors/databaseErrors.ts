@@ -7,7 +7,7 @@ class BaseError extends Error {
 
 export class EmailAlreadyExists extends BaseError {
   constructor() {
-    super("User already exists");
+    super("Email is already taken");
   }
 }
 
