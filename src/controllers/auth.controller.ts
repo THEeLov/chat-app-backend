@@ -1,10 +1,27 @@
 import { Request, Response } from "express";
-import { createUser } from "../repositories/user.repository";
+import { createUser, getUser } from "../repositories/user.repository";
 import bcrypt from "bcryptjs";
-import { EmailAlreadyExists } from "../errors/databaseErrors";
+import { EmailAlreadyExists, InvalidCredentials } from "../errors/databaseErrors";
 import { generateTokenAndSetCookie } from "../utils/generateToken";
+import User from "../models/user.model";
 
-export const signInUser = async (req: Request, res: Response) => {};
+export const signInUser = async (req: Request, res: Response) => {
+  const { email, password } = req.body;
+
+  const result = await getUser(email, password);
+
+  if (result.isOk) {
+    return res.status(200).json({message: "User succesfully logged in", user: result.value})
+  }
+
+  const error = result.error;
+
+  if (error instanceof InvalidCredentials) {
+    return res.status(401).json({ error: error.message });
+  }
+
+  return res.status(500).json({ error: "Internal server error" });
+};
 
 export const signUpUser = async (req: Request, res: Response) => {
   const { username, email, password, confirmPassword } = req.body;

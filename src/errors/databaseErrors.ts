@@ -10,3 +10,9 @@ export class EmailAlreadyExists extends BaseError {
     super("User already exists");
   }
 }
+
+export class InvalidCredentials extends BaseError {
+  constructor() {
+    super("Invalid credentials");
+  }
+}
