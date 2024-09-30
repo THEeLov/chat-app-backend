@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { createUser } from "../repositories/user.repository";
 import bcrypt from "bcryptjs";
 import { EmailAlreadyExists } from "../errors/databaseErrors";
+import { generateTokenAndSetCookie } from "../utils/generateToken";
 
 export const signInUser = async (req: Request, res: Response) => {};
 
@@ -25,6 +26,7 @@ export const signUpUser = async (req: Request, res: Response) => {
   });
 
   if (result.isOk) {
+    generateTokenAndSetCookie((result.value._id).toString(), res);
     return res.status(201).json({ message: "User created successfully", user: result.value });
   }
 
