@@ -3,7 +3,6 @@ import { createUser, getUser } from "../repositories/user.repository";
 import bcrypt from "bcryptjs";
 import { EmailAlreadyExists, InvalidCredentials } from "../errors/databaseErrors";
 import { generateTokenAndSetCookie } from "../utils/generateToken";
-import User from "../models/user.model";
 
 export const signInUser = async (req: Request, res: Response) => {
   const { email, password } = req.body;
@@ -11,6 +10,7 @@ export const signInUser = async (req: Request, res: Response) => {
   const result = await getUser(email, password);
 
   if (result.isOk) {
+    generateTokenAndSetCookie((result.value._id).toString(), res);
     return res.status(200).json({message: "User succesfully logged in", user: result.value})
   }
 
@@ -56,4 +56,12 @@ export const signUpUser = async (req: Request, res: Response) => {
   return res.status(500).json({ error: "Internal server error" });
 };
 
-export const signOutUser = async (req: Request, res: Response) => {};
+export const signOutUser = async (req: Request, res: Response) => {
+  try {
+    res.cookie("jwt", "", {maxAge: 0})
+    res.status(200).json({message: "User signed out successfully"})
+  }catch (error) {
+    console.log(error);
+    res.status(500).json({error: "Internal server error"})
+  }
+};
