@@ -1,17 +1,22 @@
 import { Result } from "@badrap/result";
 import Conversation from "../models/conversation.model";
-import { ConversationType, DbResult } from "../types";
+import { ConversationType, DbResult, MessageType } from "../types";
 import { ConversationNotFound } from "../errors/databaseErrors";
 import { ObjectId } from "mongodb";
 import Message from "../models/message.model";
+import { Types } from "mongoose";
 
 export const getConversation = async (
   senderId: string,
   receiverId: string
 ): Promise<DbResult<ConversationType>> => {
   try {
+
+    const senderObjectId = new Types.ObjectId(senderId);
+    const receiverObjectId = new Types.ObjectId(receiverId);
+    
     const conversation = await Conversation.findOne({
-      participants: { $all: [senderId, receiverId] },
+      participants: { $all: [senderObjectId, receiverObjectId] },
     }).exec();
 
     if (!conversation) {
@@ -28,7 +33,7 @@ export const getConversationAndAddMessage = async (
   senderId: string,
   receiverId: string,
   message: string
-): Promise<DbResult<ConversationType>> => {
+): Promise<DbResult<MessageType>> => {
   try {
     let conversation = await Conversation.findOne({
       participants: { $all: [senderId, receiverId] },
@@ -47,11 +52,11 @@ export const getConversationAndAddMessage = async (
     });
 
     // This could be done with transaction
-    await newMessage.save();
+    const addedMessage = await newMessage.save();
     conversation.messages.push(newMessage._id);
     await conversation.save();
 
-    return Result.ok(conversation);
+    return Result.ok(addedMessage);
   } catch (error) {
     return Result.err(new Error());
   }

@@ -22,6 +22,7 @@ export type MessageType = {
   message: string;
 }
 
+
 export type UserCreateType = Omit<UserType, "_id">;
 
 export type DbResult<T> = Promise<Result<T>>;
