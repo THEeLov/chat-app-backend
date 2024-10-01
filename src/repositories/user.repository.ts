@@ -10,7 +10,18 @@ import User from "../models/user.model";
 import { MongoServerError, ObjectId } from "mongodb";
 import bcrypt from "bcryptjs";
 
-export const findUserById = async (userId: string): Promise<DbResult<UserType>> => {
+export const findAllUsers = async (): Promise<DbResult<UserType[]>> => {
+  try {
+    const users = await User.find().exec();
+    return Result.ok(users);
+  } catch (error) {
+    return Result.err(new Error());
+  }
+};
+
+export const findUserById = async (
+  userId: string
+): Promise<DbResult<UserType>> => {
   try {
     const user = await User.findById(new ObjectId(userId)).exec();
 
