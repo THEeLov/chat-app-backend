@@ -12,7 +12,7 @@ import bcrypt from "bcryptjs";
 
 export const findAllUsers = async (): Promise<DbResult<UserType[]>> => {
   try {
-    const users = await User.find().exec();
+    const users = await User.find().select("-password").exec();
     return Result.ok(users);
   } catch (error) {
     return Result.err(new Error());
