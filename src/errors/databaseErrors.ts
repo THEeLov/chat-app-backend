@@ -16,3 +16,9 @@ export class InvalidCredentials extends BaseError {
     super("Invalid credentials");
   }
 }
+
+export class ConversationNotFound extends BaseError { 
+  constructor() {
+    super("Conversation not found");
+  }
+}

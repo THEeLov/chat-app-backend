@@ -9,6 +9,12 @@ export type UserType = {
   profilePic: string;
 };
 
+export type ConversationType = {
+  _id: ObjectId;
+  participants: Array<ObjectId>;
+  messages: Array<ObjectId>;
+}
+
 export type UserCreateType = Omit<UserType, "_id">;
 
 export type DbResult<T> = Promise<Result<T>>;
