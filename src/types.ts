@@ -15,6 +15,13 @@ export type ConversationType = {
   messages: Array<ObjectId>;
 }
 
+export type MessageType = {
+  _id: ObjectId;
+  senderId: ObjectId;
+  receiverId: ObjectId;
+  message: string;
+}
+
 export type UserCreateType = Omit<UserType, "_id">;
 
 export type DbResult<T> = Promise<Result<T>>;
