@@ -22,3 +22,9 @@ export class ConversationNotFound extends BaseError {
     super("Conversation not found");
   }
 }
+
+export class UserNotFound extends BaseError {
+  constructor() {
+    super("User not found");
+  }
+}

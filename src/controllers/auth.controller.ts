@@ -1,17 +1,22 @@
 import { Request, Response } from "express";
-import { createUser, getUser } from "../repositories/user.repository";
+import { createUser, findUserByEmailAndPassword } from "../repositories/user.repository";
 import bcrypt from "bcryptjs";
-import { EmailAlreadyExists, InvalidCredentials } from "../errors/databaseErrors";
+import {
+  EmailAlreadyExists,
+  InvalidCredentials,
+} from "../errors/databaseErrors";
 import { generateTokenAndSetCookie } from "../utils/generateToken";
 
 export const signInUser = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
-  const result = await getUser(email, password);
+  const result = await findUserByEmailAndPassword(email, password);
 
   if (result.isOk) {
-    generateTokenAndSetCookie((result.value._id).toString(), res);
-    return res.status(200).json({message: "User succesfully logged in", user: result.value})
+    generateTokenAndSetCookie(result.value._id.toString(), res);
+    return res
+      .status(200)
+      .json({ message: "User succesfully logged in", user: result.value });
   }
 
   const error = result.error;
@@ -43,8 +48,10 @@ export const signUpUser = async (req: Request, res: Response) => {
   });
 
   if (result.isOk) {
-    generateTokenAndSetCookie((result.value._id).toString(), res);
-    return res.status(201).json({ message: "User created successfully", user: result.value });
+    generateTokenAndSetCookie(result.value._id.toString(), res);
+    return res
+      .status(201)
+      .json({ message: "User created successfully", user: result.value });
   }
 
   const error = result.error;
@@ -58,10 +65,10 @@ export const signUpUser = async (req: Request, res: Response) => {
 
 export const signOutUser = async (req: Request, res: Response) => {
   try {
-    res.cookie("jwt", "", {maxAge: 0})
-    res.status(200).json({message: "User signed out successfully"})
-  }catch (error) {
+    res.cookie("jwt", "", { maxAge: 0 });
+    res.status(200).json({ message: "User signed out successfully" });
+  } catch (error) {
     console.log(error);
-    res.status(500).json({error: "Internal server error"})
+    res.status(500).json({ error: "Internal server error" });
   }
 };

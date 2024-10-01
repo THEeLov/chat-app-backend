@@ -4,7 +4,6 @@ import { ConversationType, DbResult, MessageType } from "../types";
 import { ConversationNotFound } from "../errors/databaseErrors";
 import { ObjectId } from "mongodb";
 import Message from "../models/message.model";
-import { Types } from "mongoose";
 
 export const getConversation = async (
   senderId: string,
@@ -12,8 +11,8 @@ export const getConversation = async (
 ): Promise<DbResult<ConversationType>> => {
   try {
 
-    const senderObjectId = new Types.ObjectId(senderId);
-    const receiverObjectId = new Types.ObjectId(receiverId);
+    const senderObjectId = new ObjectId(senderId);
+    const receiverObjectId = new ObjectId(receiverId);
     
     const conversation = await Conversation.findOne({
       participants: { $all: [senderObjectId, receiverObjectId] },

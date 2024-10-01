@@ -11,13 +11,13 @@ export const protectRoute = async (
   try {
     const authHeader = req.headers.authorization;
 
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
       return res
         .status(401)
         .json({ error: "You are not authorized - No Token Provided" });
     }
 
-    const token = authHeader.split(' ')[1];
+    const token = authHeader.split(" ")[1];
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET!);
 
@@ -29,13 +29,12 @@ export const protectRoute = async (
 
     const userId = new Types.ObjectId((decoded as JwtPayload).userId as string);
 
-    const user = await User.findOne((userId)).select(
-      "-password"
-    );
+    const user = await User.findOne(userId).select("-password");
 
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
+    
     req.user = user;
 
     next();

@@ -1,12 +1,33 @@
 import { UserType, UserCreateType } from "../types";
 import { Result } from "@badrap/result";
 import { DbResult } from "../types";
-import { EmailAlreadyExists, InvalidCredentials } from "../errors/databaseErrors";
+import {
+  EmailAlreadyExists,
+  InvalidCredentials,
+  UserNotFound,
+} from "../errors/databaseErrors";
 import User from "../models/user.model";
-import { MongoServerError } from "mongodb";
+import { MongoServerError, ObjectId } from "mongodb";
 import bcrypt from "bcryptjs";
 
-export const getUser = async (email: string, password: string): Promise<DbResult<UserType>> => {
+export const findUserById = async (userId: string): Promise<DbResult<UserType>> => {
+  try {
+    const user = await User.findById(new ObjectId(userId)).exec();
+
+    if (!user) {
+      return Result.err(new UserNotFound());
+    }
+
+    return Result.ok(user);
+  } catch (error) {
+    return Result.err(new Error());
+  }
+};
+
+export const findUserByEmailAndPassword = async (
+  email: string,
+  password: string
+): Promise<DbResult<UserType>> => {
   try {
     const user = await User.findOne({ email }).exec();
     const isMatch = await bcrypt.compare(password, user?.password || "");
@@ -16,8 +37,7 @@ export const getUser = async (email: string, password: string): Promise<DbResult
     }
 
     return Result.ok(user);
-  }
-  catch(error) {
+  } catch (error) {
     return Result.err(new Error());
   }
 };
