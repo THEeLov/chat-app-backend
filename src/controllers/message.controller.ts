@@ -9,7 +9,7 @@ export const sendMessage = async (req: any, res: Response) => {
   const result = await getConversationAndAddMessage(senderId, receiverId, message);
 
   if (result.isOk) {
-    return res.status(201).json({ message: "Message sent successfully", conversation: result.value });
+    return res.status(201).json(result.value);
   }
 
   return res.status(500).json({ error: "Internal server error"})

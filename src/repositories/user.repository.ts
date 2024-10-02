@@ -64,9 +64,9 @@ export const createUser = async (
       profilePic: userData.profilePic,
     });
 
-    await newUser.save();
+    const resultUser = await newUser.save();
 
-    return Result.ok(newUser);
+    return Result.ok(resultUser);
   } catch (error: any) {
     if ((error as MongoServerError).code === 11000) {
       return Result.err(new EmailAlreadyExists());

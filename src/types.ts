@@ -7,12 +7,16 @@ export type UserType = {
   email: string;
   password: string;
   profilePic: string;
+  createdAt: NativeDate;
+  updatedAt: NativeDate;
 };
 
 export type ConversationType = {
   _id: ObjectId;
   participants: Array<ObjectId>;
   messages: Array<ObjectId>;
+  createdAt: NativeDate;
+  updatedAt: NativeDate;
 }
 
 export type MessageType = {
@@ -20,9 +24,11 @@ export type MessageType = {
   senderId: ObjectId;
   receiverId: ObjectId;
   message: string;
+  createdAt: NativeDate;
+  updatedAt: NativeDate;
 }
 
 
-export type UserCreateType = Omit<UserType, "_id">;
+export type UserCreateType = Omit<UserType, "_id" | "createdAt" | "updatedAt">;
 
 export type DbResult<T> = Promise<Result<T>>;

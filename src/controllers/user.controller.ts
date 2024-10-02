@@ -10,7 +10,7 @@ export const getUser = async (req: Request, res: Response) => {
   if (result.isOk) {
     return res
       .status(200)
-      .json({ message: "User Successfully Loaded", data: result.value });
+      .json(result.value);
   }
 
   const error = result.error;
@@ -28,7 +28,7 @@ export const getUsers = async (req: Request, res: Response) => {
   if (result.isOk) {
     return res
       .status(200)
-      .json({ message: "Users Successfully Loaded", data: result.value });
+      .json(result.value);
   }
 
   return res.status(500).json({ error: "Internal Server Error" });
