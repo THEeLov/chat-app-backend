@@ -10,10 +10,9 @@ export const getConversation = async (
   receiverId: string
 ): Promise<DbResult<ConversationType>> => {
   try {
-
     const senderObjectId = new ObjectId(senderId);
     const receiverObjectId = new ObjectId(receiverId);
-    
+
     const conversation = await Conversation.findOne({
       participants: { $all: [senderObjectId, receiverObjectId] },
     }).exec();
@@ -23,6 +22,23 @@ export const getConversation = async (
     }
 
     return Result.ok(conversation);
+  } catch (error) {
+    return Result.err(new Error());
+  }
+};
+
+export const getConversationsUser = async (userId: string) => {
+  try {
+    const senderObjectId = new ObjectId(userId);
+
+    const conversations = await Conversation.find({
+      participants: { $in: [senderObjectId] },
+    })
+      .populate("participants", "-password -__v")
+      .select("-messages")
+      .exec();
+
+    return Result.ok(conversations);
   } catch (error) {
     return Result.err(new Error());
   }
@@ -56,6 +72,32 @@ export const getConversationAndAddMessage = async (
     await conversation.save();
 
     return Result.ok(addedMessage);
+  } catch (error) {
+    return Result.err(new Error());
+  }
+};
+
+export const createConversation = async (
+  senderId: string,
+  receiverId: string
+) => {
+  try {
+    const senderObjectId = new ObjectId(senderId);
+    const receiverObjectId = new ObjectId(receiverId);
+
+    const conversation = await Conversation.findOne({
+      participants: { $all: [senderObjectId, receiverObjectId] },
+    }).exec();
+
+    if (conversation) {
+      return Result.ok(conversation);
+    }
+
+    const newConversation = await Conversation.create({
+      participants: [senderObjectId, receiverObjectId],
+    });
+
+    return Result.ok(newConversation);
   } catch (error) {
     return Result.err(new Error());
   }

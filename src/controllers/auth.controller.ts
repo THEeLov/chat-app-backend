@@ -5,7 +5,7 @@ import {
   EmailAlreadyExists,
   InvalidCredentials,
 } from "../errors/databaseErrors";
-import { generateTokenAndSetCookie } from "../utils/generateToken";
+import { generateToken } from "../utils/generateToken";
 
 export const signInUser = async (req: Request, res: Response) => {
   const { email, password } = req.body;
@@ -13,10 +13,10 @@ export const signInUser = async (req: Request, res: Response) => {
   const result = await findUserByEmailAndPassword(email, password);
 
   if (result.isOk) {
-    generateTokenAndSetCookie(result.value._id.toString(), res);
+    const token = generateToken(result.value._id.toString());
     return res
       .status(200)
-      .json(result.value);
+      .json({authToken: token, user: result.value});
   }
 
   const error = result.error;
@@ -48,10 +48,10 @@ export const signUpUser = async (req: Request, res: Response) => {
   });
 
   if (result.isOk) {
-    generateTokenAndSetCookie(result.value._id.toString(), res);
+    const token = generateToken(result.value._id.toString());
     return res
       .status(201)
-      .json(result.value);
+      .json({authToken: token, user: result.value});
   }
 
   const error = result.error;
