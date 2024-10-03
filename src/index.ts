@@ -6,6 +6,7 @@ import userRoutes from './routes/user.routes';
 import { connectToMongoDB } from './db/connectToMondoDB';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import conversationRoutes from './routes/conversation.routes';
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ app.use(cookieParser());
 app.use("/api/auth", authRoutes)
 app.use("/api/messages", messageRoutes)
 app.use("/api/users", userRoutes);
+app.use("/api/conversations", conversationRoutes)
 
 // Start the server
 app.listen(port, () => {

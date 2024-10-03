@@ -39,6 +39,7 @@ export const protectRoute = async (
 
     next();
   } catch (error) {
+
     return res.status(500).json({ error: "Internal server error token" });
   }
 };

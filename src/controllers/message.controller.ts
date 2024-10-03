@@ -4,7 +4,8 @@ import { getConversationAndAddMessage } from "../repositories/conversation.repos
 export const sendMessage = async (req: any, res: Response) => {
   const { message }: { message: string } = req.body;
   const { id: receiverId } = req.params;
-  const { senderId } = (req.user!._id).toString();
+
+  const senderId = (req.user!._id).toString();
 
   const result = await getConversationAndAddMessage(senderId, receiverId, message);
 

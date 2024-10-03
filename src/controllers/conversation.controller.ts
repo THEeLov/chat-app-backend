@@ -7,8 +7,8 @@ export const getConversationsById = async (req: Request, res: Response) => {
   const result = await getConversationsUser(userId);
 
   if (result.isOk) {
-    res.status(200).json(result.value);
+     return res.status(200).json(result.value);
   }
 
-  res.status(500).json({ error: "Internal server error" });
+  return res.status(500).json({ error: "Internal server error" });
 };

@@ -27,7 +27,9 @@ export const getConversation = async (
   }
 };
 
-export const getConversationsUser = async (userId: string) => {
+export const getConversationsUser = async (
+  userId: string
+): Promise<DbResult<ConversationType[]>> => {
   try {
     const senderObjectId = new ObjectId(userId);
 
