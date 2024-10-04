@@ -105,15 +105,18 @@ export const createConversation = async (
   }
 };
 
-const getConversationAllMessages = async (
+export const getConversationAllMessages = async (
   conversationId: string
 ): Promise<DbResult<MessageType[]>> => {
   try {
-    const conversation = await Conversation.findById(conversationId)
-      .populate<{ messages: MessageType[] }>({
+    
+    const conversationObjectId = new ObjectId(conversationId);
+
+    const conversation = await Conversation.findById(conversationObjectId)
+      .populate<{messages: MessageType[]}>({
         path: "messages",
         options: { sort: { createdAt: 1 } },
-        select: "-__v",
+        select: "-__v -_id -updatedAt",
       })
       .exec();
 

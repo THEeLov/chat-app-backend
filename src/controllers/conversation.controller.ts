@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getConversationsUser } from "../repositories/conversation.repository";
+import { getConversationAllMessages, getConversationsUser } from "../repositories/conversation.repository";
 
 export const getConversationsById = async (req: Request, res: Response) => {
   const { id: userId } = req.params;
@@ -12,3 +12,16 @@ export const getConversationsById = async (req: Request, res: Response) => {
 
   return res.status(500).json({ error: "Internal server error" });
 };
+
+export const getConversationMessages = async (req: Request, response: Response) => {
+
+  const { id } = req.params;
+
+  const result = await getConversationAllMessages(id);
+
+  if (result.isOk) {
+    return response.status(200).json(result.value);
+  }
+
+  return response.status(500).json({ error: "Internal server error more" });
+}
