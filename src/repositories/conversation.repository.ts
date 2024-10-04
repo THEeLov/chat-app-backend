@@ -104,3 +104,25 @@ export const createConversation = async (
     return Result.err(new Error());
   }
 };
+
+const getConversationAllMessages = async (
+  conversationId: string
+): Promise<DbResult<MessageType[]>> => {
+  try {
+    const conversation = await Conversation.findById(conversationId)
+      .populate<{ messages: MessageType[] }>({
+        path: "messages",
+        options: { sort: { createdAt: 1 } },
+        select: "-__v",
+      })
+      .exec();
+
+    if (!conversation) {
+      return Result.err(new ConversationNotFound());
+    }
+
+    return Result.ok(conversation.messages);
+  } catch (error) {
+    return Result.err(new Error());
+  }
+};
