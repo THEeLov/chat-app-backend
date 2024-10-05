@@ -6,7 +6,7 @@ import { Types } from "mongoose";
 export const protectRoute = async (
   req: any,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const authHeader = req.headers.authorization;
@@ -34,12 +34,11 @@ export const protectRoute = async (
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
-    
+
     req.user = user;
 
     next();
   } catch (error) {
-
     return res.status(500).json({ error: "Internal server error token" });
   }
 };

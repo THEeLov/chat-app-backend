@@ -20,7 +20,7 @@ export const findAllUsers = async (): Promise<DbResult<UserType[]>> => {
 };
 
 export const findUserById = async (
-  userId: string
+  userId: string,
 ): Promise<DbResult<UserType>> => {
   try {
     const user = await User.findById(new ObjectId(userId)).exec();
@@ -37,7 +37,7 @@ export const findUserById = async (
 
 export const findUserByEmailAndPassword = async (
   email: string,
-  password: string
+  password: string,
 ): Promise<DbResult<UserType>> => {
   try {
     const user = await User.findOne({ email }).exec();
@@ -54,7 +54,7 @@ export const findUserByEmailAndPassword = async (
 };
 
 export const createUser = async (
-  userData: UserCreateType
+  userData: UserCreateType,
 ): Promise<DbResult<UserType>> => {
   try {
     const newUser = new User({

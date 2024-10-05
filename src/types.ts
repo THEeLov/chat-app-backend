@@ -1,5 +1,5 @@
 import { Result } from "@badrap/result";
-import { ObjectId } from 'mongodb'; 
+import { ObjectId } from "mongodb";
 
 export type UserType = {
   _id: ObjectId;
@@ -17,7 +17,7 @@ export type ConversationType = {
   messages: Array<ObjectId>;
   createdAt: NativeDate;
   updatedAt: NativeDate;
-}
+};
 
 export type MessageType = {
   _id: ObjectId;
@@ -26,8 +26,7 @@ export type MessageType = {
   message: string;
   createdAt: NativeDate;
   updatedAt: NativeDate;
-}
-
+};
 
 export type UserCreateType = Omit<UserType, "_id" | "createdAt" | "updatedAt">;
 

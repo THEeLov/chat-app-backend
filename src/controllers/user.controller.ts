@@ -8,9 +8,7 @@ export const getUser = async (req: Request, res: Response) => {
   const result = await findUserById(userId);
 
   if (result.isOk) {
-    return res
-      .status(200)
-      .json(result.value);
+    return res.status(200).json(result.value);
   }
 
   const error = result.error;
@@ -26,9 +24,7 @@ export const getUsers = async (req: Request, res: Response) => {
   const result = await findAllUsers();
 
   if (result.isOk) {
-    return res
-      .status(200)
-      .json(result.value);
+    return res.status(200).json(result.value);
   }
 
   return res.status(500).json({ error: "Internal Server Error" });

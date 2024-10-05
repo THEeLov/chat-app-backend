@@ -12,11 +12,13 @@ const io = new Server(server, {
   },
 });
 
-const userSocketMap: Map<String, String> = new Map();
+const userSocketMap: Map<string, string> = new Map();
+
+export const getSocketId = (id: string): string | undefined => {
+  return userSocketMap.get(id);
+};
 
 io.on("connection", (socket) => {
-  console.log("a user connected,", socket.id);
-
   const userId = socket.handshake.query.userId;
   if (typeof userId === "string") {
     userSocketMap.set(userId, socket.id);
@@ -28,7 +30,6 @@ io.on("connection", (socket) => {
 
   // socket.on() is used to listen to the events, can be used both on client and server side
   socket.on("disconnect", () => {
-    console.log("user disconnected,", socket.id);
     if (typeof userId === "string") {
       userSocketMap.delete(userId);
       io.emit("getOnlineUsers", Array.from(userSocketMap.keys()));

@@ -1,5 +1,8 @@
 import { Request, Response } from "express";
-import { createUser, findUserByEmailAndPassword } from "../repositories/user.repository";
+import {
+  createUser,
+  findUserByEmailAndPassword,
+} from "../repositories/user.repository";
 import bcrypt from "bcryptjs";
 import {
   EmailAlreadyExists,
@@ -14,9 +17,7 @@ export const signInUser = async (req: Request, res: Response) => {
 
   if (result.isOk) {
     const token = generateToken(result.value._id.toString());
-    return res
-      .status(200)
-      .json({authToken: token, user: result.value});
+    return res.status(200).json({ authToken: token, user: result.value });
   }
 
   const error = result.error;
@@ -49,9 +50,7 @@ export const signUpUser = async (req: Request, res: Response) => {
 
   if (result.isOk) {
     const token = generateToken(result.value._id.toString());
-    return res
-      .status(201)
-      .json({authToken: token, user: result.value});
+    return res.status(201).json({ authToken: token, user: result.value });
   }
 
   const error = result.error;

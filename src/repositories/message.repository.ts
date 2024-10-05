@@ -6,7 +6,7 @@ import { ObjectId } from "mongodb";
 export const createMessage = async (
   senderId: string,
   receiverId: string,
-  message: string
+  message: string,
 ): Promise<DbResult<MessageType>> => {
   try {
     const newMessage = new Message({
@@ -17,7 +17,6 @@ export const createMessage = async (
 
     const savedMessage = await newMessage.save();
     return Result.ok(savedMessage);
-    
   } catch (error) {
     return Result.err(new Error("Failed to create message"));
   }

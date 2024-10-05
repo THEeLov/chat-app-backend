@@ -6,7 +6,7 @@ import { ObjectId } from "mongodb";
 import Message from "../models/message.model";
 
 export const getConversation = async (
-  convId: string
+  convId: string,
 ): Promise<DbResult<ConversationType>> => {
   try {
     const convObjectId = new ObjectId(convId);
@@ -27,7 +27,7 @@ export const getConversation = async (
 };
 
 export const getConversationsUser = async (
-  userId: string
+  userId: string,
 ): Promise<DbResult<ConversationType[]>> => {
   try {
     const senderObjectId = new ObjectId(userId);
@@ -48,7 +48,7 @@ export const getConversationsUser = async (
 export const getConversationAndAddMessage = async (
   senderId: string,
   receiverId: string,
-  message: string
+  message: string,
 ): Promise<DbResult<MessageType>> => {
   try {
     let conversation = await Conversation.findOne({
@@ -80,7 +80,7 @@ export const getConversationAndAddMessage = async (
 
 export const createConversation = async (
   senderId: string,
-  receiverId: string
+  receiverId: string,
 ) => {
   try {
     const senderObjectId = new ObjectId(senderId);
