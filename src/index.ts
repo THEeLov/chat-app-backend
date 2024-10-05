@@ -7,10 +7,12 @@ import { connectToMongoDB } from './db/connectToMondoDB';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import conversationRoutes from './routes/conversation.routes';
+import { app, server } from './socket/socket';
+
 
 dotenv.config();
 
-const app = express();
+
 const port = 3000;
 
 app.use(cors({
@@ -27,7 +29,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/conversations", conversationRoutes)
 
 // Start the server
-app.listen(port, () => {
+server.listen(port, () => {
   connectToMongoDB();
   console.log(`Server running at http://localhost:${port}`);
 });
