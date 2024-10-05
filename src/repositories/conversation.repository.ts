@@ -6,16 +6,15 @@ import { ObjectId } from "mongodb";
 import Message from "../models/message.model";
 
 export const getConversation = async (
-  senderId: string,
-  receiverId: string
+  convId: string
 ): Promise<DbResult<ConversationType>> => {
   try {
-    const senderObjectId = new ObjectId(senderId);
-    const receiverObjectId = new ObjectId(receiverId);
+    const convObjectId = new ObjectId(convId);
 
-    const conversation = await Conversation.findOne({
-      participants: { $all: [senderObjectId, receiverObjectId] },
-    }).exec();
+    const conversation = await Conversation.findOne(convObjectId)
+      .populate("participants")
+      .populate("messages")
+      .exec();
 
     if (!conversation) {
       return Result.err(new ConversationNotFound());
@@ -100,31 +99,6 @@ export const createConversation = async (
     });
 
     return Result.ok(newConversation);
-  } catch (error) {
-    return Result.err(new Error());
-  }
-};
-
-export const getConversationAllMessages = async (
-  conversationId: string
-): Promise<DbResult<MessageType[]>> => {
-  try {
-    
-    const conversationObjectId = new ObjectId(conversationId);
-
-    const conversation = await Conversation.findById(conversationObjectId)
-      .populate<{messages: MessageType[]}>({
-        path: "messages",
-        options: { sort: { createdAt: 1 } },
-        select: "-__v -_id -updatedAt",
-      })
-      .exec();
-
-    if (!conversation) {
-      return Result.err(new ConversationNotFound());
-    }
-
-    return Result.ok(conversation.messages);
   } catch (error) {
     return Result.err(new Error());
   }
