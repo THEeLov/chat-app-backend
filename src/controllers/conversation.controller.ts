@@ -5,6 +5,7 @@ import {
   getConversationsUser,
 } from "../repositories/conversation.repository";
 import { ConversationAlreadyCreated } from "../errors/databaseErrors";
+import { getSocketId, io } from "../socket/socket";
 
 export const getConversationsById = async (req: Request, res: Response) => {
   const { id: userId } = req.params;
@@ -40,6 +41,16 @@ export const postConversation = async (req: Request, res: Response) => {
   const result = await createConversation(senderId, receiverId);
 
   if (result.isOk) {
+
+    const receiverSocketId = getSocketId(receiverId);
+    const senderSocketId = getSocketId(senderId);
+    if (receiverSocketId) {
+      io.to(receiverSocketId).emit("newContact", result.value);
+    }
+    if (senderSocketId) {
+      io.to(senderSocketId).emit("newContact", result.value);
+    }
+
     return res.status(200).json(result.value);
   }
 
