@@ -53,6 +53,24 @@ export const findUserByEmailAndPassword = async (
   }
 };
 
+export const findUsersByEmail = async (email: string | undefined): Promise<DbResult<UserType[]>> => {
+  try {
+    if (!email) {
+      email = "";
+    }
+
+    const users = await User.find({ email: { $regex: email, $options: "i" } }).exec();
+
+    if (!users || users.length === 0) {
+      return Result.err(new UserNotFound());
+    }
+
+    return Result.ok(users);
+  } catch (error) {
+    return Result.err(new Error()); 
+  }
+};
+
 export const createUser = async (
   userData: UserCreateType,
 ): Promise<DbResult<UserType>> => {
