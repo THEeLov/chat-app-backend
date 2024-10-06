@@ -35,13 +35,11 @@ export const getConversationMessages = async (
 };
 
 export const postConversation = async (req: Request, res: Response) => {
-
   const { senderId, receiverId } = req.body;
 
   const result = await createConversation(senderId, receiverId);
 
   if (result.isOk) {
-
     const receiverSocketId = getSocketId(receiverId);
     const senderSocketId = getSocketId(senderId);
     if (receiverSocketId) {
@@ -57,7 +55,7 @@ export const postConversation = async (req: Request, res: Response) => {
   const error = result.error;
 
   if (error instanceof ConversationAlreadyCreated) {
-    return res.status(409).json({error: "Conversation already created"})
+    return res.status(409).json({ error: "Conversation already created" });
   }
-  return res.status(500).json({error: "Internal server error"})
-}
+  return res.status(500).json({ error: "Internal server error" });
+};

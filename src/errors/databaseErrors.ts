@@ -31,6 +31,6 @@ export class UserNotFound extends BaseError {
 
 export class ConversationAlreadyCreated extends BaseError {
   constructor() {
-    super("Conversation already created")
+    super("Conversation already created");
   }
-} 
+}
