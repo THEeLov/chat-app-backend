@@ -15,7 +15,7 @@ const port = 3000;
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "https://bolt-krl3.onrender.com",
     credentials: true,
   }),
 );
