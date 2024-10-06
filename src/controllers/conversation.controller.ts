@@ -1,8 +1,10 @@
 import { Request, Response } from "express";
 import {
+  createConversation,
   getConversation,
   getConversationsUser,
 } from "../repositories/conversation.repository";
+import { ConversationAlreadyCreated } from "../errors/databaseErrors";
 
 export const getConversationsById = async (req: Request, res: Response) => {
   const { id: userId } = req.params;
@@ -28,5 +30,23 @@ export const getConversationMessages = async (
     return response.status(200).json(result.value);
   }
 
-  return response.status(500).json({ error: "Internal server error more" });
+  return response.status(500).json({ error: "Internal server error" });
 };
+
+export const postConversation = async (req: Request, res: Response) => {
+
+  const { senderId, receiverId } = req.body;
+
+  const result = await createConversation(senderId, receiverId);
+
+  if (result.isOk) {
+    return res.status(200).json(result.value);
+  }
+
+  const error = result.error;
+
+  if (error instanceof ConversationAlreadyCreated) {
+    return res.status(409).json({error: "Conversation already created"})
+  }
+  return res.status(500).json({error: "Internal server error"})
+}

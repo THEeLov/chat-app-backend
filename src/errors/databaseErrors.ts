@@ -28,3 +28,9 @@ export class UserNotFound extends BaseError {
     super("User not found");
   }
 }
+
+export class ConversationAlreadyCreated extends BaseError {
+  constructor() {
+    super("Conversation already created")
+  }
+} 

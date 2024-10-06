@@ -1,7 +1,7 @@
 import { Result } from "@badrap/result";
 import Conversation from "../models/conversation.model";
 import { ConversationType, DbResult, MessageType } from "../types";
-import { ConversationNotFound } from "../errors/databaseErrors";
+import { ConversationAlreadyCreated, ConversationNotFound } from "../errors/databaseErrors";
 import { ObjectId } from "mongodb";
 import Message from "../models/message.model";
 
@@ -91,7 +91,7 @@ export const createConversation = async (
     }).exec();
 
     if (conversation) {
-      return Result.ok(conversation);
+      return Result.err(new ConversationAlreadyCreated());
     }
 
     const newConversation = await Conversation.create({
