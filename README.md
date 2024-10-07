@@ -5,7 +5,7 @@ This is the backend of the real-time chat application, built using **Node.js**, 
 
 ## 🌐 Deployment on Render
 
-This backend is deployed on **Render**. Please be aware that when the server is inactive, it enters **sleep mode**. As a result, the initial request (like login or registration) may take a few extra seconds to wake up the server.
+This backend is deployed on **Render**. Please be aware that when the server is inactive, it enters **sleep mode**. As a result, the initial request (like login or registration) may take a few extra seconds/minutes to wake up the server.
 Check out the live version of the project here: [BOLT CHAT BACKEND](https://chat-app-backend-q3h4.onrender.com/)
 
 ## 🚀 Features
