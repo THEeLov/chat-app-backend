@@ -15,9 +15,9 @@ const port = 3000;
 
 app.use(
   cors({
-    origin: "https://bolt-krl3.onrender.com",
+    origin: true, // Should be changed changed for real app
     credentials: true,
-  }),
+  })
 );
 
 app.use(express.json());

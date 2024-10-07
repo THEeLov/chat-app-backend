@@ -7,7 +7,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "https://bolt-krl3.onrender.com",
+    origin: true, // Should be changed changed for real app
     methods: ["GET", "POST"],
   },
 });
