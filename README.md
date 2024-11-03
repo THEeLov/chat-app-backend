@@ -4,7 +4,7 @@ This backend supports a real-time chat application using **Node.js**, **Express*
 
 ## 🌐 Deployment
 
-Deployed on **Railway**, the server may enter **sleep mode** when inactive, causing initial requests to take longer. Check out the live version here: [BOLT CHAT BACKEND](https://chat-app-backend-q3h4.onrender.com/)
+Deployed on **Railway**, the server may enter **sleep mode** when inactive, causing initial requests to take longer. Check out the live version here: [BOLT CHAT BACKEND](https://chat-app-backend-production-daf6.up.railway.app/)
 
 ## 🚀 Features
 
