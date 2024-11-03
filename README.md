@@ -2,9 +2,9 @@
 
 This backend supports a real-time chat application using **Node.js**, **Express**, and **MongoDB**. It handles user authentication, message storage, and real-time communication via **Socket.IO**.
 
-## 🌐 Deployment on Render
+## 🌐 Deployment
 
-Deployed on **Render**, the server may enter **sleep mode** when inactive, causing initial requests to take longer. Check out the live version here: [BOLT CHAT BACKEND](https://chat-app-backend-q3h4.onrender.com/)
+Deployed on **Railway**, the server may enter **sleep mode** when inactive, causing initial requests to take longer. Check out the live version here: [BOLT CHAT BACKEND](https://chat-app-backend-q3h4.onrender.com/)
 
 ## 🚀 Features
 
